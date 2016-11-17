@@ -49,6 +49,7 @@ class linkedList
 	node *tail;
 public:
 	linkedList();
+	void userLoop();
 	void setFilename(char f[]);
 	void readFile();
 	void addNodeToEnd(node *nptr);
@@ -63,6 +64,64 @@ linkedList::linkedList()
 {
 	head = NULL;
 	tail = NULL;
+}
+
+void linkedList::userLoop()
+{
+	node *ptr;
+	ptr = head;
+	int answer = 0;
+	while (answer != 9)
+	{
+		cout << "artist: " << ptr->artist << ", " << " song: " << ptr->song << endl;
+		cout << "what do you want to do?" << endl;
+		cout << "1 for play, 2 for skip, 3 for delete, or 9 for quit" << endl;
+		cin >> answer;
+		cin.clear();
+		cin.ignore();
+		if (answer == 1)
+		{
+			cout << "playing: " << ptr->artist << ", " << ptr->song << endl;
+			cin;
+			cin.clear();
+			cin.ignore();
+		}
+		else if (answer == 2)
+		{
+			int skip = 0;
+			cout << "how many songs do you want to skip?" << endl;
+			cin >> skip;
+			skip -= 1;
+			cin.clear();
+			cin.ignore();
+
+			for (int i = 0; i < skip; i++)
+			{
+				ptr = ptr->next;
+			}
+		}
+		else if (answer == 3)
+		{
+			removeNode(ptr->artist);
+		}
+		else if (answer == 9)
+		{
+			cout << "goodbye" << endl;
+			return;
+		}
+		else
+		{
+			cout << "invalid entry" << endl;
+		}
+		if (ptr->next == NULL)
+		{
+			ptr = head;
+		}
+		else
+		{
+			ptr = ptr->next;
+		}
+	}
 }
 
 void linkedList::setFilename(char f[])
@@ -178,8 +237,8 @@ node * linkedList::findItem(char i[])
 	return NULL;
 }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-int linkedList::removeNode(char i[])//FIX THIS SHIT. NEED STRCMP ON THE SECOND LOOP
+
+int linkedList::removeNode(char i[])
 {
 	node *ptr = head;
 	if (ptr == NULL)  // empty list
@@ -202,7 +261,7 @@ int linkedList::removeNode(char i[])//FIX THIS SHIT. NEED STRCMP ON THE SECOND L
 
 	while (ptr != NULL)
 	{
-		if (ptr->next && (ptr->next)->artist == i)//!!!!!!!!! strcmp(something)
+		if (ptr->next && strcmp((ptr->next)->artist, i) == 0)
 		{
 			if (tail == ptr->next)
 				tail = ptr;
@@ -226,6 +285,7 @@ int main()
 	cin.ignore();
 	mylist->setFilename(file);
 	mylist->readFile();
+	//mylist->userLoop();
 	// test if list is empty
 	if (mylist->removeNode("taylor swift"))
 		cout << "failed to remove" << endl;
@@ -253,6 +313,6 @@ int main()
 	mylist->findItem("taylor swift");
 	cout << "(searching for item 'staind')\n";
 	mylist->findItem("staind");
-	
+	mylist->userLoop();
 	return 0;
 }
