@@ -50,7 +50,7 @@ class linkedList
 public:
 	linkedList();
 	void setFilename(char f[]);
-	void readList();
+	void readFile();
 	void addNodeToEnd(node *nptr);
 	void addNodeToHead(node *nptr);
 	int insertAfter(node *ptr, char i[]);
@@ -70,7 +70,7 @@ void linkedList::setFilename(char f[])
 	strcpy_s(filename, f);
 }
 
-void linkedList::readList()//NOT SURE IF THIS WORKS
+void linkedList::readFile()//NOT SURE IF THIS WORKS, ASK ABOUT FILENAMES
 {
 	ifstream infile(filename);
 	if (!infile)
@@ -218,7 +218,14 @@ int linkedList::removeNode(char i[])//FIX THIS SHIT. NEED STRCMP ON THE SECOND L
 
 int main()
 {
+	char file[50];
 	linkedList *mylist = new linkedList();
+	cout << "please enter full path filename" << endl;
+	cin >> file;
+	cin.clear();
+	cin.ignore();
+	mylist->setFilename(file);
+	mylist->readFile();
 	// test if list is empty
 	if (mylist->removeNode("taylor swift"))
 		cout << "failed to remove" << endl;
